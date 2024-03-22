@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Mission11_Williams.Models;
 
+//Class for the Book table of the database
 public partial class Book
 {
     [Key, Required]

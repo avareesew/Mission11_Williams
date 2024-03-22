@@ -1,5 +1,7 @@
 ﻿namespace Mission11_Williams.Models.ViewModels
 {
+
+    //this class holds the information for how we want to divide out the books between pages
     public class PaginationInfo
     {
         public int TotalItems { get; set; }
