@@ -1,32 +1,39 @@
 using Microsoft.AspNetCore.Mvc;
 using Mission11_Williams.Models;
+using Mission11_Williams.Models.ViewModels;
 using System.Diagnostics;
 
 namespace Mission11_Williams.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private IBookRepository _repo;
+        public HomeController(IBookRepository temp)
         {
-            _logger = logger;
+            _repo = temp;
+
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int pageNum)
         {
-            return View();
+            int pageSize = 10;
+
+            var blah = new BooksListViewModel
+            {
+                Books = _repo.Books
+                .OrderBy(x => x.Title)
+                .Skip((pageNum - 1) * pageSize)
+                .Take(pageSize),
+
+                PaginationInfo = new PaginationInfo
+                {
+                    CurrentPage = pageNum,
+                    ItemsPerPage = 10,
+                    TotalItems = _repo.Books.Count()
+                }
+            };
+            return View(blah);
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
     }
 }
